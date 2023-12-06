@@ -19,3 +19,6 @@ export const NFT_TYPE = `${PACKAGE_ID}::issuer::DriveNFTId`;
 export const CLOCK_ID = "0x6";
 
 export const driveObjectType = `${PACKAGE_ID}::nft::DriveNFT`;
+
+export const CREDENTIALS_DB_ADDRESS =
+  "0xD3e74C33F5b41B3F30F69849e078Df999926d7e3";

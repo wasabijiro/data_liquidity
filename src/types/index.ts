@@ -1,3 +1,6 @@
+import { Contract, ethers, Signer } from "ethers";
+import { Web3Provider } from "@ethersproject/providers";
+
 export type ZKProof = {
   proofPoints: {
     a: string[];
@@ -82,4 +85,27 @@ export type AccountData = {
   sub: string;
   aud: string;
   maxEpoch: number;
+};
+
+export type credentisalState = {
+  credentialsDB: Contract | undefined;
+  walletAddress: string;
+  walletPublicKey: string;
+  provider: Web3Provider | undefined;
+  signer: Signer | undefined;
+  proofPack: {
+    proof: any;
+    publicSignals: any;
+  };
+  disclosureVector: number[] | undefined;
+  connectAccount: () => void;
+  getPubKeyFromMM: (walletAddress: string) => void;
+  generateProof: (
+    credentialNumber: number,
+    credentialJSON: any,
+    claimsArray: any,
+    disclosureVector: any
+  ) => void;
+  setDisclosureVector: (disclosureVector: number[]) => void;
+  getInfo: () => void;
 };

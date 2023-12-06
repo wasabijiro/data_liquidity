@@ -2,7 +2,7 @@
 
 import { lalezar } from "@/app/fonts";
 import { useZkLoginSetup } from "@/libs/store/zkLogin";
-import { NETWORK } from "@/config/sui";
+import { SUI_NETWORK } from "@/config/sui";
 import { shortenAddress } from "@/utils";
 
 export default function Page() {
@@ -24,7 +24,7 @@ export default function Page() {
           <b className="ml-2">
             <a
               className={`text-center text-blue-400 underline text-xl mb-8 ${lalezar.className}`}
-              href={`https://suiscan.xyz/${NETWORK}/account/${zkLoginSetup.userAddr}/tx-blocks`}
+              href={`https://suiscan.xyz/${SUI_NETWORK}/account/${zkLoginSetup.userAddr}/tx-blocks`}
             >
               {shortenAddress(zkLoginSetup.userAddr)}
             </a>
