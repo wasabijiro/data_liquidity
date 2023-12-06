@@ -15,10 +15,10 @@ export const FooterMenu: React.FC = () => {
     {
       icon: <MdOutlinePrivacyTip />,
       label: "発行",
-      href: "/issue",
+      href: "/issuer",
     },
-    { icon: <SlPresent />, label: "証明", href: "/proof" },
-    { icon: <LuMailPlus />, label: "検証", href: "/verify" },
+    { icon: <SlPresent />, label: "証明", href: "/holder" },
+    { icon: <LuMailPlus />, label: "検証", href: "/verifier" },
   ];
   const pathname = usePathname();
 
