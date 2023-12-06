@@ -38,3 +38,15 @@ snarkjs zkey export verificationkey zkey/circuit_final.zkey verificationkey/veri
 script = '''
 npx hardhat run --network goerli scripts/deploy.ts
 '''
+
+[tasks."sui:build"]
+script = '''
+cd contracts/sui
+sui move build
+'''
+
+[tasks."sui:deploy"]
+script = '''
+cd contracts/sui
+sui client publish --gas-budget 123456789 --skip-dependency-verification
+'''
