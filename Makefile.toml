@@ -1,0 +1,14 @@
+[tasks."ui:install"]
+script = '''
+npm i
+'''
+
+[tasks."ui:dev"]
+script = '''
+npm run dev
+'''
+
+[tasks."ui:build"]
+script = '''
+npm run build
+'''
