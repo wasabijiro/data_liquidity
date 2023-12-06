@@ -8,7 +8,10 @@ import { generateMerkleProof, generateZKProof } from "@/libs/eth";
 
 export const useCredentialDB = create<credentisalState>((set, get) => ({
   credentialsDB: undefined,
-  walletAddress: "",
+  mercari_id: "114514",
+  ethAddress: "",
+  aptAddress: "",
+  suiAddress: "",
   walletPublicKey: "",
   provider: undefined,
   signer: undefined,
@@ -33,7 +36,8 @@ export const useCredentialDB = create<credentisalState>((set, get) => ({
         console.log({ creDB });
         set({ credentialsDB: creDB });
       }
-      set({ walletAddress: accounts[0] });
+      // @ts-ignore
+      set({ ethAddress: accounts[0] });
       set({ provider: provider });
       set({ signer: signer });
     }
@@ -83,11 +87,17 @@ export const useCredentialDB = create<credentisalState>((set, get) => ({
   setDisclosureVector: (disclosureVector: number[]) => {
     set({ disclosureVector: disclosureVector });
   },
+  setSuiAddress: (address: string) => {
+    set({ suiAddress: address });
+  },
+  setAptosAddress: (address: string) => {
+    set({ aptAddress: address });
+  },
   getInfo: () => ({
     // @ts-ignore
     credentialsDB: get().credentialsDB,
     // @ts-ignore
-    walletAddress: get().walletAddress,
+    ethAddress: get().ethAddress,
     // @ts-ignore
     walletPublicKey: get().walletPublicKey,
     // @ts-ignore

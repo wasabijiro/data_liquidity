@@ -89,7 +89,10 @@ export type AccountData = {
 
 export type credentisalState = {
   credentialsDB: Contract | undefined;
-  walletAddress: string;
+  mercari_id: string;
+  ethAddress: string;
+  aptAddress: string;
+  suiAddress: string;
   walletPublicKey: string;
   provider: Web3Provider | undefined;
   signer: Signer | undefined;
@@ -107,5 +110,7 @@ export type credentisalState = {
     disclosureVector: any
   ) => void;
   setDisclosureVector: (disclosureVector: number[]) => void;
+  setSuiAddress: (address: string) => void;
+  setAptosAddress: (address: string) => void;
   getInfo: () => void;
 };

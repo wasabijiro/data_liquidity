@@ -23,7 +23,7 @@ import {
   AptosWalletName,
   useWallet as useAptosWallet,
 } from "@manahippo/aptos-wallet-adapter";
-import CREDENTIAL_DB_ARTIFACT from "../../../artifacts/contracts/CredentialsDB.sol/CredentialsDB.json";
+import CREDENTIAL_DB_ARTIFACT from "../../../../artifacts/contracts/CredentialsDB.sol/CredentialsDB.json";
 
 export default function Page() {
   const zkLoginSetup = useZkLoginSetup();
@@ -58,12 +58,12 @@ export default function Page() {
     const getPubKeyFromMM = async (walletAddress: string) => {
       await credentialSetup.getPubKeyFromMM(walletAddress);
     };
-    if (credentialSetup.walletAddress) {
+    if (credentialSetup.ethAddress) {
       console.log("##1##");
-      initializeCredentialJSON(credentialSetup.walletAddress);
-      getPubKeyFromMM(credentialSetup.walletAddress);
+      initializeCredentialJSON(credentialSetup.ethAddress);
+      getPubKeyFromMM(credentialSetup.ethAddress);
     }
-  }, [credentialSetup.walletAddress]);
+  }, [credentialSetup.ethAddress]);
 
   useEffect(() => {
     console.log(wallets[2].adapter.name);
@@ -71,6 +71,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!suiet.connected) return;
+    // useCredentialDB.setSuiAddress(suiet.account?.address!);
     console.log("connected suiet name: ", suiet.name);
     console.log("account address: ", suiet.account?.address);
     console.log("account publicKey: ", suiet.account?.publicKey);
@@ -117,7 +118,7 @@ export default function Page() {
       </div>
       <div className="flex flex-col gap-5">
         <div>
-          {credentialSetup.walletAddress == "" ? (
+          {credentialSetup.ethAddress == "" ? (
             <button
               className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
               onClick={() => credentialSetup.connectAccount()}
@@ -128,26 +129,12 @@ export default function Page() {
             <b className="ml-2">
               <a
                 className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.walletAddress}`}
+                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
               >
-                {shortenAddress(credentialSetup.walletAddress)}
+                {shortenAddress(credentialSetup.ethAddress)}
               </a>
             </b>
           )}
-        </div>
-        <div>
-          {/* {!suiet.account?.address ? ( */}
-          <ConnectButton />
-          {/* ) : (
-            <b className="ml-2">
-              <a
-                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.walletAddress}`}
-              >
-                {shortenAddress(credentialSetup.walletAddress)}
-              </a>
-            </b>
-          )} */}
         </div>
         <div>
           {!connected ? (
@@ -163,10 +150,43 @@ export default function Page() {
             <b className="ml-2">
               <a
                 className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.walletAddress}`}
+                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
               >
                 {/* @ts-ignore */}
                 {shortenAddress(account?.address?.toString())}
+              </a>
+            </b>
+          )}
+        </div>
+        <div>
+          {/* {!suiet.account?.address ? ( */}
+          <ConnectButton />
+          {/* ) : (
+            <b className="ml-2">
+              <a
+                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
+                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
+              >
+                {shortenAddress(credentialSetup.ethAddress)}
+              </a>
+            </b>
+          )} */}
+        </div>
+        <div>
+          {credentialSetup.ethAddress == "" ? (
+            <button
+              className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
+              onClick={() => credentialSetup.connectAccount()}
+            >
+              <div>Connect Polygon Wallet</div>
+            </button>
+          ) : (
+            <b className="ml-2">
+              <a
+                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
+                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
+              >
+                {shortenAddress(credentialSetup.ethAddress)}
               </a>
             </b>
           )}
@@ -208,25 +228,24 @@ export default function Page() {
                   <input
                     name={val}
                     className={`w-80 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 ${lalezar.className}`}
-                    readOnly={val === "ethAddress"}
-                    defaultValue={
-                      val === "ethAddress" ? credentialSetup.walletAddress : ""
+                    readOnly={
+                      val === "ethAddress" ||
+                      val === "polygonAddress" ||
+                      val === "suiAddress" ||
+                      val === "aptAddress" ||
+                      val === "mercari_id"
                     }
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      const name = event.target.name;
-                      const value = event.target.value;
-                      if (credentialJSON === undefined) {
-                        const newCredentialJSON = {
-                          claims: { [name]: value },
-                        };
-                        console.log({ newCredentialJSON });
-                        setCredentialJSON(newCredentialJSON);
-                      } else {
-                        const newCredentialJSON = credentialJSON;
-                        newCredentialJSON.claims[name] = value;
-                        setCredentialJSON(newCredentialJSON);
-                      }
-                    }}
+                    defaultValue={
+                      val === "ethAddress"
+                        ? credentialSetup.ethAddress
+                        : val === "suiAddress"
+                        ? credentialSetup.suiAddress
+                        : val === "aptAddress"
+                        ? credentialSetup.aptAddress
+                        : val === "mercari_id"
+                        ? credentialSetup.mercari_id
+                        : ""
+                    }
                   />
                 </label>
               );
