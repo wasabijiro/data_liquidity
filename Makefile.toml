@@ -33,3 +33,8 @@ snarkjs groth16 setup build/zkVerifiableCredentialsDBCore.r1cs ptau/powersOfTau2
 snarkjs zkey contribute zkey/circuit_0000.zkey zkey/circuit_final.zkey --name="1st Contributor Name" -v -e="random text"
 snarkjs zkey export verificationkey zkey/circuit_final.zkey verificationkey/verification_key.json
 '''
+
+[tasks."deploy:verifier"]
+script = '''
+npx hardhat run --network goerli scripts/deploy.ts
+'''
