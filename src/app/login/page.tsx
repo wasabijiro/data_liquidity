@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Account, OpenIdProvider } from "@/types";
 import { useZkLoginSetup } from "@/libs/store/zkLogin";
 import { ZKLOGIN_ACCONTS } from "@/config";
-import googleAnimationData from "@/components/interface/animations/google.json";
 import { useLottie } from "@/utils/useLottie";
 import { lalezar } from "@/app/fonts";
 
@@ -16,10 +15,6 @@ export default function Page() {
   const [account, setAccount] = useLocalStorage<Account | null>(
     ZKLOGIN_ACCONTS,
     null
-  );
-  const { container: googleAnimationContainer } = useLottie(
-    googleAnimationData,
-    true
   );
   const zkLoginSetup = useZkLoginSetup();
 
