@@ -44,9 +44,9 @@ export default function Page() {
     <div className="grid place-items-center h-screen">
       <div className="pb-32">
         <p
-          className={`text-center text-black text-8xl mb-8 ${lalezar.className}`}
+          className={`text-center text-black text-3xl mb-8 ${lalezar.className}`}
         >
-          Night
+          ウォレットを生成
         </p>
         <div
           id="login-buttons"

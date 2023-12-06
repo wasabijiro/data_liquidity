@@ -1,14 +1,18 @@
 {
+  "resolveJsonModule": true,
+  "esModuleInterop": true,
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -20,8 +24,27 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
+    },
+    "rootDirs": ["./src", "./scripts", "./test"],
+    "typeRoots": ["node_modules/@types", "types", "./customtypes"]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "./test/*",
+    "./tasks/*",
+    "./scripts/*",
+    "**/*.js",
+    "./credentials-src/*",
+    "./artifacts/*",
+    ".next/types/**/*.ts"
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "commonjs"
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

@@ -4,8 +4,8 @@ import { getFullnodeUrl, SuiClient } from "@mysten/sui.js/client";
 // export const GAS_BUDGET = 5000000;
 export const GAS_BUDGET = 123456789;
 
-export const NETWORK = "testnet";
+export const SUI_NETWORK = "testnet";
 
 export const suiClient = new SuiClient({
-  url: getFullnodeUrl(NETWORK),
+  url: getFullnodeUrl(SUI_NETWORK),
 });
