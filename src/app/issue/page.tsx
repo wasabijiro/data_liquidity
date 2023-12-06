@@ -18,11 +18,18 @@ import {
   ascii_to_hex,
   computeLeaf,
 } from "@/libs/eth";
+import { ConnectButton, useWallet as useSuiWallet } from "@suiet/wallet-kit";
+import {
+  AptosWalletName,
+  useWallet as useAptosWallet,
+} from "@manahippo/aptos-wallet-adapter";
 import CREDENTIAL_DB_ARTIFACT from "../../../artifacts/contracts/CredentialsDB.sol/CredentialsDB.json";
 
 export default function Page() {
   const zkLoginSetup = useZkLoginSetup();
   const credentialSetup = useCredentialDB();
+  const suiet = useSuiWallet();
+  const { connect, disconnect, connected, wallets, account } = useAptosWallet();
   const [claimsArray, setClaimsArray] = useState<string[] | undefined>(
     undefined
   );
@@ -57,6 +64,17 @@ export default function Page() {
       getPubKeyFromMM(credentialSetup.walletAddress);
     }
   }, [credentialSetup.walletAddress]);
+
+  useEffect(() => {
+    console.log(wallets[2].adapter.name);
+  }, []);
+
+  useEffect(() => {
+    if (!suiet.connected) return;
+    console.log("connected suiet name: ", suiet.name);
+    console.log("account address: ", suiet.account?.address);
+    console.log("account publicKey: ", suiet.account?.publicKey);
+  }, [suiet.connected]);
 
   const buttonName = () => {
     switch (status) {
@@ -97,24 +115,62 @@ export default function Page() {
           </b>
         )}
       </div>
-      <div>
-        {credentialSetup.walletAddress == "" ? (
-          <button
-            className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-            onClick={() => credentialSetup.connectAccount()}
-          >
-            <div>Connect Ethereum Wallet</div>
-          </button>
-        ) : (
-          <b className="ml-2">
-            <a
+      <div className="flex flex-col gap-5">
+        <div>
+          {credentialSetup.walletAddress == "" ? (
+            <button
               className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-              href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.walletAddress}`}
+              onClick={() => credentialSetup.connectAccount()}
             >
-              {shortenAddress(credentialSetup.walletAddress)}
-            </a>
-          </b>
-        )}
+              <div>Connect Ethereum Wallet</div>
+            </button>
+          ) : (
+            <b className="ml-2">
+              <a
+                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
+                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.walletAddress}`}
+              >
+                {shortenAddress(credentialSetup.walletAddress)}
+              </a>
+            </b>
+          )}
+        </div>
+        <div>
+          {/* {!suiet.account?.address ? ( */}
+          <ConnectButton />
+          {/* ) : (
+            <b className="ml-2">
+              <a
+                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
+                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.walletAddress}`}
+              >
+                {shortenAddress(credentialSetup.walletAddress)}
+              </a>
+            </b>
+          )} */}
+        </div>
+        <div>
+          {!connected ? (
+            <button
+              className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
+              onClick={() => {
+                connect(wallets[2].adapter.name); // E.g. connecting to the Aptos official wallet
+              }}
+            >
+              <div>Connect Aptos Wallet</div>
+            </button>
+          ) : (
+            <b className="ml-2">
+              <a
+                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
+                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.walletAddress}`}
+              >
+                {/* @ts-ignore */}
+                {shortenAddress(account?.address?.toString())}
+              </a>
+            </b>
+          )}
+        </div>
       </div>
       <button
         onClick={async () => {
