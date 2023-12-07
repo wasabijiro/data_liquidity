@@ -1,0 +1,385 @@
+[
+    {
+        "id": "0x41E74EFD2590AB56EE51EB60C5D67AB6A644C91F",
+        "balance": 1461979,
+        "loan_amount": 13784,
+        "liquidation": 25,
+        "deferrals": 99,
+        "transaction_volume": 80,
+        "credit": 34477929,
+        "protocols": {
+            "2": "uniswapv3_lp"
+        }
+    },
+    {
+        "id": "0x8F4DB399F9D6D513F89737773DC4BA8EFEF0E6D5",
+        "balance": 559170,
+        "loan_amount": 2194,
+        "liquidation": 78,
+        "deferrals": 40,
+        "transaction_volume": 91,
+        "credit": 9038831,
+        "protocols": {
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0x35D2E3813EE0C6C281878C272C6812C345F6AFB6",
+        "balance": 440164,
+        "loan_amount": 13173,
+        "liquidation": 140,
+        "deferrals": 29,
+        "transaction_volume": 66,
+        "credit": 4798582,
+        "protocols": {
+            "2": "uniswapv3_lp"
+        }
+    },
+    {
+        "id": "0x3B545389A9194B9524BB6D9A89662407FE041EA3",
+        "balance": 273291,
+        "loan_amount": 1572,
+        "liquidation": 177,
+        "deferrals": 27,
+        "transaction_volume": 99,
+        "credit": 17818907,
+        "protocols": {
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0xEF966938F72AAF1DD88A0DC7C1CE7D9368077DDC",
+        "balance": 966383,
+        "loan_amount": 11550,
+        "liquidation": 191,
+        "deferrals": 42,
+        "transaction_volume": 93,
+        "credit": 58047744,
+        "protocols": {
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0xB72ACF452DFC16321FF165B65A2FB8A6BFEA0D6A",
+        "balance": 404704,
+        "loan_amount": 13147,
+        "liquidation": 173,
+        "deferrals": 69,
+        "transaction_volume": 80,
+        "credit": 15040583,
+        "protocols": {
+            "2": "uniswapv3_lp",
+            "1": "aave",
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0xB49DFDCF3C2C35F994AC8EF321901C812CB14BF2",
+        "balance": 1777123,
+        "loan_amount": 2035,
+        "liquidation": 148,
+        "deferrals": 76,
+        "transaction_volume": 95,
+        "credit": 16332484,
+        "protocols": {
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0x5F07941C68A2E4C1085853DA43442AE4528C5B9E",
+        "balance": 1861518,
+        "loan_amount": 9494,
+        "liquidation": 203,
+        "deferrals": 1,
+        "transaction_volume": 89,
+        "credit": 78832518,
+        "protocols": {
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0xF3292FEB16289719A27798B2748EF499F9819166",
+        "balance": 257268,
+        "loan_amount": 9838,
+        "liquidation": 254,
+        "deferrals": 20,
+        "transaction_volume": 4,
+        "credit": 48240839,
+        "protocols": {
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0xBECC92BFB4B8E099A4B4D3ADB0FA46FD7DAE8772",
+        "balance": 83827,
+        "loan_amount": 8734,
+        "liquidation": 196,
+        "deferrals": 46,
+        "transaction_volume": 51,
+        "credit": 69108406,
+        "protocols": {
+            "1": "aave",
+            "2": "uniswapv3_lp",
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0x4268C7EA96EB60995F3B6AD2E7BA2E297A6F554A",
+        "balance": 126309,
+        "loan_amount": 841,
+        "liquidation": 277,
+        "deferrals": 29,
+        "transaction_volume": 69,
+        "credit": 48004789,
+        "protocols": {
+            "3": "maker_dao",
+            "2": "uniswapv3_lp",
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0x29A93BD61AB4720F8AF3892917B6A76742EF3AF2",
+        "balance": 170842,
+        "loan_amount": 8949,
+        "liquidation": 223,
+        "deferrals": 94,
+        "transaction_volume": 99,
+        "credit": 79288872,
+        "protocols": {
+            "2": "uniswapv3_lp",
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0x22B28E51E174BD05BEF5000D6D9F64F50C8A132F",
+        "balance": 843753,
+        "loan_amount": 10106,
+        "liquidation": 184,
+        "deferrals": 53,
+        "transaction_volume": 49,
+        "credit": 1895535,
+        "protocols": {
+            "3": "maker_dao",
+            "2": "uniswapv3_lp",
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0xA51E40299D1D0F707B679C94A2BE2F3A92B3FF06",
+        "balance": 1923373,
+        "loan_amount": 13494,
+        "liquidation": 96,
+        "deferrals": 41,
+        "transaction_volume": 56,
+        "credit": 81419963,
+        "protocols": {
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0xF40F23CA372F4EEDFAEA59026B56DD832F69C974",
+        "balance": 743268,
+        "loan_amount": 10371,
+        "liquidation": 273,
+        "deferrals": 63,
+        "transaction_volume": 92,
+        "credit": 19205358,
+        "protocols": {
+            "2": "uniswapv3_lp"
+        }
+    },
+    {
+        "id": "0xD9A14B571287B2C0401BE2138D6F74331B6EA8DA",
+        "balance": 750865,
+        "loan_amount": 8166,
+        "liquidation": 241,
+        "deferrals": 45,
+        "transaction_volume": 29,
+        "credit": 38076605,
+        "protocols": {
+            "1": "aave",
+            "2": "uniswapv3_lp",
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0x21A6956E23958025533FDB4361E51A820ECACD3C",
+        "balance": 697639,
+        "loan_amount": 12628,
+        "liquidation": 191,
+        "deferrals": 31,
+        "transaction_volume": 91,
+        "credit": 48143171,
+        "protocols": {
+            "2": "uniswapv3_lp",
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0x1F24D0F2054568534855D8103C4DEA0E73450BDF",
+        "balance": 769533,
+        "loan_amount": 12092,
+        "liquidation": 133,
+        "deferrals": 86,
+        "transaction_volume": 13,
+        "credit": 33550874,
+        "protocols": {
+            "3": "maker_dao",
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0x4CF340C526C4A9BF17B7E82953578584439D2CD3",
+        "balance": 109970,
+        "loan_amount": 9397,
+        "liquidation": 57,
+        "deferrals": 17,
+        "transaction_volume": 2,
+        "credit": 11208912,
+        "protocols": {
+            "3": "maker_dao",
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0xBD0E4FE9D78C848174E3F95A9A86DD989D849E9F",
+        "balance": 1044123,
+        "loan_amount": 3418,
+        "liquidation": 288,
+        "deferrals": 46,
+        "transaction_volume": 21,
+        "credit": 39035447,
+        "protocols": {
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0x5882AA6786767913B3BE371D4C93ABC42B2AFFF6",
+        "balance": 1538036,
+        "loan_amount": 1888,
+        "liquidation": 181,
+        "deferrals": 34,
+        "transaction_volume": 3,
+        "credit": 18674409,
+        "protocols": {
+            "2": "uniswapv3_lp",
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0x66FE75B6C471DE3FA935BBA8857B2B34F409F7D1",
+        "balance": 1112936,
+        "loan_amount": 10406,
+        "liquidation": 257,
+        "deferrals": 97,
+        "transaction_volume": 58,
+        "credit": 97801319,
+        "protocols": {
+            "3": "maker_dao",
+            "2": "uniswapv3_lp"
+        }
+    },
+    {
+        "id": "0xBAF365CB667F801FCF759005EBE5F317BA2F1DC5",
+        "balance": 1772218,
+        "loan_amount": 13168,
+        "liquidation": 234,
+        "deferrals": 69,
+        "transaction_volume": 22,
+        "credit": 57282754,
+        "protocols": {
+            "3": "maker_dao",
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0xFCB05197F9D7D3B8C4783A597CD7D380AAC34AEC",
+        "balance": 587057,
+        "loan_amount": 4753,
+        "liquidation": 257,
+        "deferrals": 24,
+        "transaction_volume": 93,
+        "credit": 67321865,
+        "protocols": {
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0x4E1B9E82BF695EB404E5D45E9AFE2A72DD9378C3",
+        "balance": 717941,
+        "loan_amount": 12274,
+        "liquidation": 192,
+        "deferrals": 42,
+        "transaction_volume": 81,
+        "credit": 54706204,
+        "protocols": {
+            "3": "maker_dao",
+            "1": "aave",
+            "2": "uniswapv3_lp"
+        }
+    },
+    {
+        "id": "0x7360C3A6C58C1FB4CA9CC7D23BFA9409329A744F",
+        "balance": 1407789,
+        "loan_amount": 12392,
+        "liquidation": 5,
+        "deferrals": 84,
+        "transaction_volume": 64,
+        "credit": 5858093,
+        "protocols": {
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0x081AF23CD5C2BF178BFF3202866CC398AEC45976",
+        "balance": 1049514,
+        "loan_amount": 3602,
+        "liquidation": 109,
+        "deferrals": 46,
+        "transaction_volume": 95,
+        "credit": 20425512,
+        "protocols": {
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0xAE79D1BD791CC54B018BF2E5FFD691B0439C06B6",
+        "balance": 447997,
+        "loan_amount": 12385,
+        "liquidation": 158,
+        "deferrals": 11,
+        "transaction_volume": 95,
+        "credit": 96488062,
+        "protocols": {
+            "3": "maker_dao",
+            "1": "aave"
+        }
+    },
+    {
+        "id": "0x27353912B4771354B49540E6EC8842EEDAEDB97E",
+        "balance": 759091,
+        "loan_amount": 7021,
+        "liquidation": 36,
+        "deferrals": 4,
+        "transaction_volume": 92,
+        "credit": 16045641,
+        "protocols": {
+            "1": "aave",
+            "3": "maker_dao"
+        }
+    },
+    {
+        "id": "0x904BC756CC5B9D0C00CECF60193BFF21AB932784",
+        "balance": 1728922,
+        "loan_amount": 4389,
+        "liquidation": 259,
+        "deferrals": 61,
+        "transaction_volume": 36,
+        "credit": 40434705,
+        "protocols": {
+            "2": "uniswapv3_lp",
+            "3": "maker_dao",
+            "1": "aave"
+        }
+    }
+]
