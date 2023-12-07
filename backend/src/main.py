@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from pathlib import Path
 from pprint import pprint
 from typing import Any
@@ -27,10 +28,22 @@ class BackendClass:
         system_message: str = f"""
         # Overview
         You are a professional trader who can determine creditworthiness.
-        Estimate the creditworthiness of the user entered in user_message based on the database entered below.
+        You can refer to your database of members and perfectly estimate the creditworthiness of users.
+
+        # Todo
+        Estimate the credibility of the user entered in user_message based on the database entered below.
 
         # Inside the database
-        This database includes user IDs, balances, credit amounts, clearing, number of delinquencies, transaction volume, credit, and protocols.
+        This database contains user IDs, balances, credit amounts, clearings, # number of delinquencies, transaction volume, credit, and protocols.
+        This database contains information of 30 users and includes the following information.
+        ID: User ID
+        balance: The balance. The higher this amount is, the higher the user's credit rating. 500 ~ 15000.
+        loan_amount: Loan amount. If this amount is exceeded, the user will not be able to receive credit. 1 ~ 300.
+        liquidation: Number of liquidations. This is the number of times the user has liquidated. 500 ~ 15000.
+        deferrals: Number of delinquencies. The number of times a user has been delinquent. The higher this value, the more points will be deducted. 1 ~ 100.
+        transaction_volume: Transaction volume. The amount of money the user transacted. The higher this value is, the higher the credit score. 1 ~ 100.
+        credit: Credit rating. You must estimate this value based on other information. 500 ~ 100000000.
+        protocols: The protocols with which the user transacted. Represents the protocols with which the user has transacted.
 
         # Notes.
         - Output examples must be followed.
@@ -38,12 +51,19 @@ class BackendClass:
         - **The following format must be followed.**
 
         # Output format
-        - score = 10000
+        - json format
+        - key: score, value: int
+        - key: reason, value: str ** WRITE JAPAENSE **
 
         # Output examples
-        - score = 119311
-        - score = 1325486
-        - score = 0
+        {{
+            "score": 13000,
+            "reason": "ユーザの残高が多いので、クレジットスコアも高いと判断しました。"
+        }},
+        {{
+            "score": 10000,
+            "reason": "利用者の残高は中程度だが、延滞が多いため、クレジットスコアは低いと判断しました。"
+        }}
 
         """
 
@@ -52,7 +72,7 @@ class BackendClass:
     def make_user_message(self, json_dict: dict[str, Any]) -> str:
         user_message: str = f"""
         The following is information on a user {json_dict["id"]}.
-        This user's current balance is {json_dict["balance"]}, but this is not necessarily the true credit amount.
+        This user's current balance is {json_dict["credit"]}, but this is not necessarily the true credit amount.
         So, estimate the amount of credit for this user based on the database entered.
 
         # User information
@@ -103,11 +123,6 @@ def execute(input_dict: dict[str, Any]) -> dict[str, int]:
         user_message=backend.make_user_message(input_dict),
         system_message=backend.make_system_message(),
     )
-
-    # 出力にブレがある
-    logger.info(f"response: {response}")
-    response = response.split("=")[1].replace(" ", "")
-    response = int(response)
     return response
 
 
