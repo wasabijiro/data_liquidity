@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname } from "next/navigation";
 import React from "react";
 import { IoCarSportOutline } from "react-icons/io5";
@@ -10,14 +12,13 @@ import { MenuItem } from "./MenuItem";
 export const FooterMenu: React.FC = () => {
   const items = [
     { icon: <PiCertificate />, label: "証明書", href: "/creds" },
-    // { icon: <IoCarSportOutline />, label: '走行データ', href: '/personal-data' },
     {
       icon: <MdOutlinePrivacyTip />,
-      label: "情報開示",
-      href: "/personal-data",
+      label: "発行",
+      href: "/issuer",
     },
-    { icon: <SlPresent />, label: "特典", href: "/rewards" },
-    { icon: <LuMailPlus />, label: "シェア", href: "/share" },
+    { icon: <SlPresent />, label: "証明", href: "/holder" },
+    { icon: <LuMailPlus />, label: "検証", href: "/verifier" },
   ];
   const pathname = usePathname();
 
