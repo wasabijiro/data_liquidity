@@ -17,11 +17,52 @@ const Page = () => {
   const credentialSetup = useCredentialDB();
   const zkLoginSetup = useZkLoginSetup();
   const [digest, setDigest] = useState<string>("");
+  const [messsage, setMessage] = useState<string>("");
+  const [fetched, setFetched] = useState<boolean>(false);
   // const a = true;
 
   useEffect(() => {
+    console.log("##1##");
     if (credentialSetup.isVerified) {
+      const postData = {
+        id: "0x438D35f5420E58A63875B17AF872782be3878bd3",
+        balance: 10000,
+        loan_amount: 100000,
+        liquidation: 100000,
+        deferrals: 10000,
+        transaction_volume: 10000,
+        credit: 100000,
+        protocols: { "1": "aave", "2": "uniswapv3_lp", "3": "maker_dao" },
+      };
+
+      console.log("##2##");
+
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add any additional headers if needed
+        },
+        body: JSON.stringify(postData),
+      };
+
+      console.log({ requestOptions });
+
+      // if (credentialSetup.isVerified) {
+      // Make the POST request only if credential is verified
+      fetch("http://localhost:5003/mercari", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          // Handle the response data if needed
+          console.log("Response from server:", data);
+          setFetched(true);
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error("Error making POST request:", error);
+        });
     }
+    // }
   }, []);
 
   const sendTestTx = async () => {
@@ -57,14 +98,34 @@ const Page = () => {
           </div>
         </div>
         <div className="flex flex-row">
-          <p className="text-center text-black text-2xl mb-4 sm:mb-8">
-            <b>¥10,000</b>
-          </p>
+          {fetched ? (
+            <div className="flex flex-row items-end gap-2">
+              <p className="text-center text-black text-2xl mb-4 sm:mb-8">
+                <b>¥13,000</b>
+              </p>
+              <p className="text-center text-cyan-300 text-xl sm:mb-8 mb-4">
+                <b>(+30%)</b>
+              </p>
+            </div>
+          ) : (
+            <p className="text-center text-black text-2xl mb-4 sm:mb-8">
+              <b>¥10,000</b>
+            </p>
+          )}
         </div>
-        <div className="w-120 h-8 bg-cyan-300 rounded-lg mb-6 sm:mb-10 flex justify-between items-center px-2">
+        <div className="w-120 h-8 bg-cyan-300 rounded-lg mb-4 sm:mb-10 flex justify-between items-center px-2">
           <div className="text-white font-light">¥0</div>
-          <div className="text-white font-light">¥10,000</div>
+          {fetched ? (
+            <div className="text-white font-light">¥13,000</div>
+          ) : (
+            <div className="text-white font-light">¥10,000</div>
+          )}
         </div>
+        {fetched && (
+          <div className="text-black font-light text-sm mb-2">
+            Uniswap v3へ多額の流動性供給を評価しました
+          </div>
+        )}
         {credentialSetup.isVerified ? (
           <div className="flex flex-col">
             <button

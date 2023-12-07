@@ -12,9 +12,9 @@ export const moveCallSponsoredMint = async (
 ) => {
   txb.setSender(account.userAddr);
   moveCallMintNft(txb, {
-    name: "Mazda Drive NFT",
-    description: "Web3 Global Hackathon for Mazda",
-    url: "ipfs://bafybeiez4cq7ixp6h2fgzlzl2223t4pdydl6udxefxy4lxairivszceptm",
+    name: "Mercari Proof Success NFT",
+    description: "Mercoin Hackathon",
+    url: "ipfs://Qmdrhha1ncgkrxpU7Hh6FkmHvGLgsMKcWKzHhMmKBudrqT",
   });
   const payloadBytes = await txb.build({
     client: suiClient,
