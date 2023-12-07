@@ -18,16 +18,20 @@ const groth16 = require("snarkjs").groth16;
 export default function Page() {
   const zkLoginSetup = useZkLoginSetup();
   const credentialSetup = useCredentialDB();
-  const [credentialNumber, setCredentialNumber] = useState<number>(0);
-  const [credentialJSON, setCredentialJSON] = useState<
-    | {
-        claims: { [x: string]: string };
-      }
-    | undefined
-  >(undefined);
-  const [claimsArray, setClaimsArray] = useState<string[] | undefined>(
-    undefined
-  );
+  const [credentialNumber, setCredentialNumber] = useState<number>(1);
+  // const [credentialJSON, setCredentialJSON] = useState<
+  //   | {
+  //       claims: { [x: string]: string };
+  //     }
+  //   | undefined
+  // >(undefined);
+  const [claimsArray, setClaimsArray] = useState<string[]>([
+    "mercari_id",
+    "ethAddress",
+    "aptAddress",
+    "suiAddress",
+    "merAddress",
+  ]);
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <p
@@ -71,7 +75,7 @@ export default function Page() {
           </b>
         )}
       </div> */}
-      <div
+      {/* <div
         className={`flex justify-center text-black text-3xl mt-4 ${lalezar.className}`}
       >
         Recover your credential
@@ -114,8 +118,8 @@ export default function Page() {
         className="text-white py-3 px-5 mt-10 rounded-xl bg-blue-600 hover:bg-slate-700"
       >
         Recover
-      </button>
-      {credentialJSON && claimsArray && (
+      </button> */}
+      {credentialSetup.credentialJSON && claimsArray && (
         <div className="flex flex-col gap-2">
           <div
             className={`flex justify-center text-black text-3xl mt-4 ${lalezar.className}`}
@@ -126,7 +130,8 @@ export default function Page() {
             {claimsArray.map((claimNames) => {
               return (
                 <li key={claimNames}>
-                  {claimNames} = {credentialJSON.claims[claimNames]}
+                  {claimNames} = {/* @ts-ignore */}
+                  {credentialSetup.credentialJSON.claims[claimNames]}
                 </li>
               );
             })}
@@ -158,7 +163,7 @@ export default function Page() {
             onClick={async () => {
               credentialSetup.generateProof(
                 credentialNumber,
-                credentialJSON,
+                credentialSetup.credentialJSON,
                 claimsArray,
                 credentialSetup.disclosureVector
               );
