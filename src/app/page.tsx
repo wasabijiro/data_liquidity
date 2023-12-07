@@ -2,32 +2,44 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-
+import { GoQuestion } from "react-icons/go";
 
 const Page = () => {
   const router = useRouter();
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen gap-3 p-4 sm:p-0">
-      <div className="border-2 m-4 p-4">
-        <div className="flex flex-row">
-          <p className="text-center text-gray-400">メルペイあと払い残枠</p>
-          <button
-            className="border-2 border-red-500 bg-white text-red-500 rounded-lg px-6 sm:px-10 py-1 sm:py-2 mt-2 sm:mt-4 ml-2 sm:ml-4"
-            onClick={() => router.push("/login")}
-          >
-            支払い方法を変更
-          </button>
+      <div className="border-2 m-4 p-4 w-full">
+        <div className="flex flex-row gap-1">
+          <p className="text-center text-xs text-gray-400">
+            メルペイあと払い残枠
+          </p>
+          <div className="text-gray-400">
+            <GoQuestion />
+          </div>
+          <div className="ml-auto">
+            <button
+              className="border-2 border-red-400 bg-white text-red-400 text-sm rounded-2xl px-10 sm:px-8 py-1 sm:py-1.5 mt-2 sm:mt-4"
+              onClick={() => {}}
+            >
+              支払い方法を変更
+            </button>
+          </div>
         </div>
         <div className="flex flex-row">
-          <p className="text-center text-black text-2xl mb-4 sm:mb-8">¥10,000</p>
+          <p className="text-center text-black text-2xl mb-4 sm:mb-8">
+            <b>¥10,000</b>
+          </p>
         </div>
-        <div className="w-52 h-6 bg-blue-500 rounded-full mb-6 sm:mb-10"></div>
+        <div className="w-120 h-8 bg-cyan-300 rounded-lg mb-6 sm:mb-10 flex justify-between items-center px-2">
+          <div className="text-white font-light">¥0</div>
+          <div className="text-white font-light">¥10,000</div>
+        </div>
         <button
-          className="border-2 border-red-500 bg-white text-red-500 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4"
+          className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
           onClick={() => router.push("/login")}
         >
-          データを更新して与信を更新
+          データを開示して与信を更新
         </button>
       </div>
       {/* <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 border-2 p-2 m-2"> */}
@@ -77,7 +89,9 @@ const Page = () => {
         <div className="mb-4 sm:mb-0">
           <p className="text-center sm:text-left">電子マネー(iD)</p>
           <br />
-          <p className="text-center sm:text-left text-gray-400">設定後の使い方・よくある使い</p>
+          <p className="text-center sm:text-left text-gray-400">
+            設定後の使い方・よくある使い
+          </p>
         </div>
         <div className="flex items-center justify-center sm:justify-end">
           <Image

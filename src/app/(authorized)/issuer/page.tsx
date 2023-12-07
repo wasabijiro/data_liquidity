@@ -37,12 +37,12 @@ export default function Page() {
     "suiAddress",
     "merAddress",
   ]);
-  const [credentialJSON, setCredentialJSON] = useState<
-    | {
-        claims: { [x: string]: string };
-      }
-    | undefined
-  >(undefined);
+  // const [credentialJSON, setCredentialJSON] = useState<
+  //   | {
+  //       claims: { [x: string]: string };
+  //     }
+  //   | undefined
+  // >(undefined);
   const [counter, setCounter] = useState<number>(0);
   const [openForm, setOpenForm] = useState(false);
   const [status, setStatus] = useState<
@@ -60,7 +60,7 @@ export default function Page() {
           merAddress: zkLoginSetup.userAddr,
         },
       };
-      setCredentialJSON(initialCredentialJSON);
+      credentialSetup.setCredentialJSON(initialCredentialJSON);
     };
 
     const getPubKeyFromMM = async (walletAddress: string) => {
@@ -261,18 +261,18 @@ export default function Page() {
           </form>
           <button
             onClick={async () => {
-              console.log({ credentialJSON });
+              console.log(credentialSetup.credentialJSON);
               setStatus("encrypting");
               const enc = encryptWithMM(
                 credentialSetup.walletPublicKey,
                 // @ts-ignore
-                credentialJSON
+                credentialSetup.credentialJSON
               );
               console.log({ enc });
               setStatus("computing");
               const leaf = computeLeaf(
                 // @ts-ignore
-                credentialJSON,
+                credentialSetup.credentialJSON,
                 claimsArray
               );
               console.log({ leaf });

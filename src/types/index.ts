@@ -94,6 +94,11 @@ export type credentisalState = {
   aptAddress: string;
   suiAddress: string;
   walletPublicKey: string;
+  credentialJSON:
+    | {
+        claims: { [x: string]: string };
+      }
+    | undefined;
   provider: Web3Provider | undefined;
   signer: Signer | undefined;
   proofPack: {
@@ -112,5 +117,6 @@ export type credentisalState = {
   setDisclosureVector: (disclosureVector: number[]) => void;
   setSuiAddress: (address: string) => void;
   setAptosAddress: (address: string) => void;
+  setCredentialJSON: (credentialJSON: any) => void;
   getInfo: () => void;
 };

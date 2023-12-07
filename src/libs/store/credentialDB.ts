@@ -15,6 +15,7 @@ export const useCredentialDB = create<credentisalState>((set, get) => ({
   suiAddress:
     "0xddbfeeb9f8704eca37f6c421fe1036cfe85de398c37a8fc9760e9cbf2da8fe03",
   walletPublicKey: "",
+  credentialJSON: undefined,
   provider: undefined,
   signer: undefined,
   proofPack: {
@@ -88,6 +89,9 @@ export const useCredentialDB = create<credentisalState>((set, get) => ({
   },
   setDisclosureVector: (disclosureVector: number[]) => {
     set({ disclosureVector: disclosureVector });
+  },
+  setCredentialJSON: (credentialJSON: any) => {
+    set({ credentialJSON: credentialJSON });
   },
   setSuiAddress: (address: string) => {
     set({ suiAddress: address });
