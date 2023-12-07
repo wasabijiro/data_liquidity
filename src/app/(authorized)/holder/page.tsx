@@ -52,7 +52,7 @@ export default function Page() {
           </b>
         )}
       </div>
-      <div className="mb-2">
+      {/* <div className="mb-2">
         {credentialSetup.ethAddress == "" ? (
           <button
             className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
@@ -70,7 +70,7 @@ export default function Page() {
             </a>
           </b>
         )}
-      </div>
+      </div> */}
       <div
         className={`flex justify-center text-black text-3xl mt-4 ${lalezar.className}`}
       >

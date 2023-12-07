@@ -10,8 +10,10 @@ export const useCredentialDB = create<credentisalState>((set, get) => ({
   credentialsDB: undefined,
   mercari_id: "114514",
   ethAddress: "",
-  aptAddress: "",
-  suiAddress: "",
+  aptAddress:
+    "0xf1cd67ef7061931e5668decdcbd558bee10358756e3115a07f22d583e3a309a7",
+  suiAddress:
+    "0xddbfeeb9f8704eca37f6c421fe1036cfe85de398c37a8fc9760e9cbf2da8fe03",
   walletPublicKey: "",
   provider: undefined,
   signer: undefined,
