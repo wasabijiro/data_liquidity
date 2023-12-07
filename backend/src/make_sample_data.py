@@ -11,12 +11,12 @@ class MakeSampleDataClass:
         self.data_dir: Path = Path(__file__).parent.parent / "data"
         self.original_data: dict[str, Any] = {
             "id": "0x438D35f5420E58A63875B17AF872782be3878bd3",
-            "balance": 10000,
-            "loan_amount": 100000,
-            "liquidation": 100000,
-            "deferrals": 10000,
-            "transaction_volume": 10000,
-            "credit": 100000,
+            "balance": 328124,
+            "loan_amount": 1459,
+            "liquidation": 34,
+            "deferrals": 3,
+            "transaction_volume": 22,
+            "credit": 43000,
             "protocols": {"1": "aave", "2": "uniswapv3_lp", "3": "maker_dao"},
         }
 
@@ -28,16 +28,23 @@ class MakeSampleDataClass:
             new_data["id"] = "0x" + "".join(
                 [random.choice("0123456789ABCDEF") for _ in range(40)]
             )
-            new_data["balance"] = random.randint(5000, 20000)
-            new_data["loan_amount"] = random.randint(50000, 150000)
-            new_data["liquidation"] = random.randint(50000, 150000)
-            new_data["deferrals"] = random.randint(5000, 20000)
-            new_data["transaction_volume"] = random.randint(5000, 20000)
-            new_data["credit"] = random.randint(50000, 150000)
-            new_data["protocols"] = [f"test{i}" for i in range(1, random.randint(1, 5))]
+            new_data["balance"] = random.randint(0, 2000000)
+            new_data["loan_amount"] = random.randint(500, 15000)
+            new_data["liquidation"] = random.randint(1, 300)
+            new_data["deferrals"] = random.randint(1, 100)
+            new_data["transaction_volume"] = random.randint(1, 100)
+            new_data["credit"] = random.randint(500, 100000000)
+
+            new_data["protocols"] = {
+                str(i): protocol
+                for i, protocol in random.sample(
+                    self.original_data["protocols"].items(),
+                    k=random.randint(1, len(self.original_data["protocols"])),
+                )
+            }
 
             data_points.append(new_data)
-            self.write_json(data_points)
+        self.write_json(data_points)
 
     def write_json(self, data_points: list[dict[str, Any]]) -> None:
         self.data_dir.mkdir(exist_ok=True)
