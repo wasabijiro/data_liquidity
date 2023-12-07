@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { lalezar } from "@/app/fonts";
 import { useState, useEffect } from "react";
 import { useZkLoginSetup } from "@/libs/store/zkLogin";
 import { useCredentialDB } from "@/libs/store/credentialDB";
 import { SUI_NETWORK } from "@/config/sui";
 import { ETH_NETWORK } from "@/config/ethereum";
-import { shortenAddress } from "@/utils";
+import { shortenAddress, veryShortenAddress } from "@/utils";
 import { Contract, ethers, Signer } from "ethers";
 import { Web3Provider } from "@ethersproject/providers";
 import { CREDENTIALS_DB_ADDRESS } from "@/config";
@@ -104,9 +105,9 @@ export default function Page() {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <p
-        className={`text-center text-black text-8xl mb-4 ${lalezar.className}`}
+        className={`text-center text-black text-2xl mb-4 ${lalezar.className}`}
       >
-        Issuer Portal
+        ウォレット接続
       </p>
       <div className="flex mb-2">
         <p
@@ -125,24 +126,41 @@ export default function Page() {
           </b>
         )}
       </div>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-row gap-2">
         <div>
           {credentialSetup.ethAddress == "" ? (
             <button
-              className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
+              className="text-white text-xl py-3 px-4 rounded-xl bg-white hover:bg-slate-700 border-2 border-gray-400 w-30 h-30"
               onClick={() => credentialSetup.connectAccount()}
             >
-              <div>Connect Ethereum Wallet</div>
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/metamask.png"
+                  alt="Metamask Logo"
+                  width={70}
+                  height={70}
+                />
+              </div>
             </button>
           ) : (
-            <b className="ml-2">
-              <a
-                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
-              >
-                {shortenAddress(credentialSetup.ethAddress)}
-              </a>
-            </b>
+            <div className="flex flex-col py-5 px-5 border-2 border-gray-400 w-30 h-30 rounded-xl">
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/ethereum.png"
+                  alt="Ethereum Logo"
+                  width={30}
+                  height={30}
+                />
+              </div>
+              <b className="ml-2">
+                <a
+                  className="text-black text-sm bg-white hover:bg-slate-700 "
+                  href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
+                >
+                  {veryShortenAddress(credentialSetup.ethAddress)}
+                </a>
+              </b>
+            </div>
           )}
         </div>
         <div>
@@ -156,16 +174,24 @@ export default function Page() {
               <div>Connect Aptos Wallet</div>
             </button>
           ) : (
-            <b className="ml-2">
-              <a
-                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
-              >
-                {/* @ts-ignore */}
-                {/* {shortenAddress(account?.address?.toString())} */}
-                {shortenAddress(credentialSetup.aptAddress)}
-              </a>
-            </b>
+            <div className="flex flex-col py-5 px-5 border-2 border-gray-400 w-30 h-30 rounded-xl">
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/aptos.png"
+                  alt="Aptos Logo"
+                  width={30}
+                  height={30}
+                />
+              </div>
+              <b className="ml-2">
+                <a
+                  className="text-black text-sm bg-white hover:bg-slate-700 "
+                  href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
+                >
+                  {veryShortenAddress(credentialSetup.aptAddress)}
+                </a>
+              </b>
+            </div>
           )}
         </div>
         <div>
@@ -179,15 +205,19 @@ export default function Page() {
               <div>Connect Sui Wallet</div>
             </button>
           ) : (
-            <b className="ml-2">
-              <a
-                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
-              >
-                {/* @ts-ignore */}
-                {shortenAddress(credentialSetup.suiAddress)}
-              </a>
-            </b>
+            <div className="flex flex-col py-5 px-5 border-2 border-gray-400 w-30 h-30 rounded-xl">
+              <div className="flex items-center justify-center">
+                <Image src="/sui.png" alt="Sui Logo" width={30} height={30} />
+              </div>
+              <b className="ml-2">
+                <a
+                  className="text-black text-sm bg-white hover:bg-slate-700 "
+                  href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
+                >
+                  {veryShortenAddress(credentialSetup.suiAddress)}
+                </a>
+              </b>
+            </div>
           )}
         </div>
         {/* <div>

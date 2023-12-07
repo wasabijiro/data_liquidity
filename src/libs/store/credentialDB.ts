@@ -15,6 +15,16 @@ export const useCredentialDB = create<credentisalState>((set, get) => ({
   suiAddress:
     "0xddbfeeb9f8704eca37f6c421fe1036cfe85de398c37a8fc9760e9cbf2da8fe03",
   walletPublicKey: "",
+  // credentialJSON: {
+  //   claims: {
+  //     mercari_id: get().mercari_id,
+  //     ethAddress: get().ethAddress,
+  //     aptAddress: get().aptAddress,
+  //     suiAddress: get().suiAddress,
+  //     merAddress:
+  //       "0x22b022481a2a4162efd03910d81cb4aa66dcb96071c9743d0773d336389dfae1",
+  //   },
+  // },
   credentialJSON: undefined,
   provider: undefined,
   signer: undefined,
