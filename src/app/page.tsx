@@ -3,9 +3,79 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { GoQuestion } from "react-icons/go";
+import { useCredentialDB } from "@/libs/store/credentialDB";
+import { useEffect, useState } from "react";
+import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { moveCallSponsoredMint } from "@/libs/sponsoredZkLogin";
+import { useZkLoginSetup } from "@/libs/store/zkLogin";
+import { SUI_NETWORK } from "@/config/sui";
+import { shortenAddress } from "@/utils";
 
 const Page = () => {
   const router = useRouter();
+
+  const credentialSetup = useCredentialDB();
+  const zkLoginSetup = useZkLoginSetup();
+  const [digest, setDigest] = useState<string>("");
+  const [messsage, setMessage] = useState<string>("");
+  const [fetched, setFetched] = useState<boolean>(false);
+  // const a = true;
+
+  useEffect(() => {
+    console.log("##1##");
+    if (credentialSetup.isVerified) {
+      const postData = {
+        id: "0x438D35f5420E58A63875B17AF872782be3878bd3",
+        balance: 10000,
+        loan_amount: 100000,
+        liquidation: 100000,
+        deferrals: 10000,
+        transaction_volume: 10000,
+        credit: 100000,
+        protocols: { "1": "aave", "2": "uniswapv3_lp", "3": "maker_dao" },
+      };
+
+      console.log("##2##");
+
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add any additional headers if needed
+        },
+        body: JSON.stringify(postData),
+      };
+
+      console.log({ requestOptions });
+
+      // if (credentialSetup.isVerified) {
+      // Make the POST request only if credential is verified
+      fetch("http://localhost:5003/mercari", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          // Handle the response data if needed
+          console.log("Response from server:", data);
+          setFetched(true);
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error("Error making POST request:", error);
+        });
+    }
+    // }
+  }, []);
+
+  const sendTestTx = async () => {
+    const txb = new TransactionBlock();
+    const account = zkLoginSetup.account();
+    console.log("account", account);
+    console.log(zkLoginSetup.userAddr);
+    const result = await moveCallSponsoredMint(txb, account);
+    console.log(result.effects?.status.status);
+    if (result.effects?.status.status === "success") {
+      setDigest(result.digest);
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen gap-3 p-4 sm:p-0">
@@ -28,20 +98,63 @@ const Page = () => {
           </div>
         </div>
         <div className="flex flex-row">
-          <p className="text-center text-black text-2xl mb-4 sm:mb-8">
-            <b>¥10,000</b>
-          </p>
+          {fetched ? (
+            <div className="flex flex-row items-end gap-2">
+              <p className="text-center text-black text-2xl mb-4 sm:mb-8">
+                <b>¥13,000</b>
+              </p>
+              <p className="text-center text-cyan-300 text-xl sm:mb-8 mb-4">
+                <b>(+30%)</b>
+              </p>
+            </div>
+          ) : (
+            <p className="text-center text-black text-2xl mb-4 sm:mb-8">
+              <b>¥10,000</b>
+            </p>
+          )}
         </div>
-        <div className="w-120 h-8 bg-cyan-300 rounded-lg mb-6 sm:mb-10 flex justify-between items-center px-2">
+        <div className="w-120 h-8 bg-cyan-300 rounded-lg mb-4 sm:mb-10 flex justify-between items-center px-2">
           <div className="text-white font-light">¥0</div>
-          <div className="text-white font-light">¥10,000</div>
+          {fetched ? (
+            <div className="text-white font-light">¥13,000</div>
+          ) : (
+            <div className="text-white font-light">¥10,000</div>
+          )}
         </div>
-        <button
-          className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
-          onClick={() => router.push("/login")}
-        >
-          データを開示して与信を更新
-        </button>
+        {fetched && (
+          <div className="text-black font-light text-sm mb-2">
+            Uniswap v3へ多額の流動性供給を評価しました
+          </div>
+        )}
+        {credentialSetup.isVerified ? (
+          <div className="flex flex-col">
+            <button
+              className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
+              onClick={sendTestTx}
+            >
+              NFTをミント
+            </button>
+            {digest && (
+              <p>
+                <a
+                  style={{ color: "#0000EE" }}
+                  className="mx-1 underline decoration-solid"
+                  // href={`https://suiscan.xyz/${NETWORK}/tx/${mintDigest}`}
+                  href={`https://suiexplorer.com/txblock/${digest}?network=${SUI_NETWORK}`}
+                >
+                  {shortenAddress(digest)}
+                </a>
+              </p>
+            )}
+          </div>
+        ) : (
+          <button
+            className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
+            onClick={() => router.push("/login")}
+          >
+            データを開示して与信を更新
+          </button>
+        )}
       </div>
       {/* <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 border-2 p-2 m-2"> */}
       <div className="flex flex-row border-2 p-2 m-2">

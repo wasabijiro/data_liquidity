@@ -6,7 +6,7 @@ from pprint import pprint
 from typing import Any
 
 import openai
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from loguru import logger
 
@@ -128,7 +128,10 @@ def execute(input_dict: dict[str, Any]) -> dict[str, int]:
 
 # product
 @app.route("/mercari", methods=["POST"])
-def main(input_dict: dict[str, Any]) -> int:
+def main() -> int:
+    input_dict = request.get_json()
+    print(input_dict)
+    # print(request.get_json())
     response = execute(input_dict)
     return jsonify(response)
 
@@ -147,5 +150,5 @@ def test() -> None:
 
 
 if __name__ == "__main__":
-    _ = test()
-    # app.run(port=5003, debug=True)
+    # _ = test()
+    app.run(port=5003, debug=True)

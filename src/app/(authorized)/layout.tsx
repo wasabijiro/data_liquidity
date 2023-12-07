@@ -67,7 +67,7 @@ export default function AuthorizedRouteLayout({
         <FooterMenu />
       </div>
 
-      <div className="fixed top-0 right-0 p-4 flex flex-col gap-4">
+      {/* <div className="fixed top-0 right-0 p-4 flex flex-col gap-4">
         <button
           onClick={sendTestTx}
           className={`flex items-center justify-center text-white py-3 px-5 rounded-xl w-80 ${
@@ -92,7 +92,7 @@ export default function AuthorizedRouteLayout({
         >
           Log out
         </button>
-      </div>
+      </div> */}
     </>
   );
 }

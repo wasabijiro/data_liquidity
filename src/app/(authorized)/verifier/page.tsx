@@ -4,6 +4,7 @@ import { IncrementalMerkleTree } from "@zk-kit/incremental-merkle-tree";
 import { Contract, ethers, Signer } from "ethers";
 // @ts-ignore
 import { poseidon } from "circomlibjs";
+import { useRouter } from "next/navigation";
 import { lalezar } from "@/app/fonts";
 import { useState } from "react";
 import { useZkLoginSetup } from "@/libs/store/zkLogin";
@@ -18,12 +19,12 @@ const groth16 = require("snarkjs").groth16;
 const sd_vec = [0, 1, 0, 0, 0];
 
 export default function Page() {
+  const router = useRouter();
   const zkLoginSetup = useZkLoginSetup();
   const credentialSetup = useCredentialDB();
   const [proofSuccess, setProofSuccess] = useState<boolean>(false);
   const [claimsArray, setClaimsArray] = useState<any | undefined>(undefined);
   const [vals, setVals] = useState<string[] | undefined>(undefined);
-  const [isVerified, setIsVerified] = useState<boolean>(false);
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <p
@@ -120,7 +121,7 @@ export default function Page() {
           console.log({ res });
 
           if (res.result === true) {
-            setIsVerified(true);
+            credentialSetup.setIsVerified(true);
           }
 
           //Get Claims in string char
@@ -148,13 +149,14 @@ export default function Page() {
           if (res.result === true) {
             console.log("verify success");
             setProofSuccess(true);
+            router.push("/");
           }
         }}
         className="text-white py-3 px-5 mt-5 rounded-xl bg-blue-600 hover:bg-slate-700"
       >
         Verify Proof
       </button>
-      {isVerified && (
+      {credentialSetup.isVerified && (
         <div
           className={`flex justify-center text-black text-xl mt-4 ${lalezar.className}`}
         >
