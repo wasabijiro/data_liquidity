@@ -172,42 +172,27 @@ export default function Page() {
             </b>
           )} */}
         </div>
-        <div>
-          {credentialSetup.ethAddress == "" ? (
-            <button
-              className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-              onClick={() => credentialSetup.connectAccount()}
-            >
-              <div>Connect Polygon Wallet</div>
-            </button>
-          ) : (
-            <b className="ml-2">
-              <a
-                className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-                href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
-              >
-                {shortenAddress(credentialSetup.ethAddress)}
-              </a>
-            </b>
-          )}
-        </div>
       </div>
-      <button
-        onClick={async () => {
-          const claims = await readSchemaClaims(credentialSetup.credentialsDB);
-          console.log({ claims });
-          setClaimsArray(claims);
-          const credentialsCounter = await readCredentialsCounter(
-            credentialSetup.credentialsDB
-          );
-          console.log({ credentialsCounter });
-          setCounter(credentialsCounter);
-          setOpenForm(true);
-        }}
-        className="text-white py-3 px-5 mt-10 rounded-xl bg-blue-600 hover:bg-slate-700"
-      >
-        Read contract credential schema
-      </button>
+      {!openForm && (
+        <button
+          onClick={async () => {
+            const claims = await readSchemaClaims(
+              credentialSetup.credentialsDB
+            );
+            console.log({ claims });
+            setClaimsArray(claims);
+            const credentialsCounter = await readCredentialsCounter(
+              credentialSetup.credentialsDB
+            );
+            console.log({ credentialsCounter });
+            setCounter(credentialsCounter);
+            setOpenForm(true);
+          }}
+          className="text-white py-3 px-5 mt-10 rounded-xl bg-blue-600 hover:bg-slate-700"
+        >
+          Read contract credential schema
+        </button>
+      )}
       {openForm && (
         <div className="w-1/2 flex flex-col justify-center">
           <div
