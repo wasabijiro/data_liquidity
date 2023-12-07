@@ -7,7 +7,7 @@ import { useZkLoginSetup } from "@/libs/store/zkLogin";
 import { useCredentialDB } from "@/libs/store/credentialDB";
 import { SUI_NETWORK } from "@/config/sui";
 import { ETH_NETWORK } from "@/config/ethereum";
-import { shortenAddress, veryShortenAddress } from "@/utils";
+import { shortenAddress, veryShortenAddress, fewShortenAddress } from "@/utils";
 import { Contract, ethers, Signer } from "ethers";
 import { Web3Provider } from "@ethersproject/providers";
 import { CREDENTIALS_DB_ADDRESS } from "@/config";
@@ -45,6 +45,7 @@ export default function Page() {
   //   | undefined
   // >(undefined);
   const [counter, setCounter] = useState<number>(0);
+  const [credentialNumber, setCredentialNumber] = useState<number>(1);
   const [openForm, setOpenForm] = useState(false);
   const [status, setStatus] = useState<
     "notyet" | "encrypting" | "computing" | "uploading" | "done"
@@ -90,15 +91,13 @@ export default function Page() {
   const buttonName = () => {
     switch (status) {
       case "notyet":
-        return "Issue";
-      case "encrypting":
-        return "Encrypting credential...";
+        return "発行";
       case "computing":
-        return "Computing Credentials Merkle Tree leaf...";
+        return "リーフハッシュを計算中...";
       case "uploading":
-        return "Uploading leaf to smart contract";
+        return "コントラクトを実行中...";
       case "done":
-        return "Issurance Done!";
+        return "完了！";
     }
   };
 
@@ -130,7 +129,7 @@ export default function Page() {
         <div>
           {credentialSetup.ethAddress == "" ? (
             <button
-              className="text-white text-xl py-3 px-4 rounded-xl bg-white hover:bg-slate-700 border-2 border-gray-400 w-30 h-30"
+              className="text-white text-xl py-3 px-4 rounded-xl bg-white border-2 border-gray-400 w-30 h-30"
               onClick={() => credentialSetup.connectAccount()}
             >
               <div className="flex items-center justify-center">
@@ -224,103 +223,101 @@ export default function Page() {
           <ConnectButton />
         </div> */}
       </div>
-      {/* {!openForm && (
+      <p
+        className={`text-center text-black text-lg mt-5 mb-3 ${lalezar.className}`}
+      >
+        <b>選択的開示</b>
+      </p>
+
+      {credentialSetup.credentialJSON &&
+        claimsArray.map((claimNames, index) => {
+          return (
+            <div
+              key={claimNames}
+              className="flex items-center justify-center ml-20"
+            >
+              {status === "done" && (
+                <input
+                  type="checkbox"
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    let newDisclosureVector = credentialSetup.disclosureVector;
+                    // @ts-ignore
+                    newDisclosureVector[index] = event.target.checked ? 1 : 0;
+                    // @ts-ignore
+                    credentialSetup.setDisclosureVector(newDisclosureVector);
+                  }}
+                />
+              )}
+              <div
+                className={`text-black text-xl w-30 ml-3 ${lalezar.className}`}
+              >
+                {claimNames}
+              </div>
+              <div
+                className={`text-black text-xl w-30 ml-2 ${lalezar.className}`}
+              >
+                =
+              </div>
+              <div className={`w-60 px-3 py-2 ${lalezar.className}`}>
+                {claimNames === "mercari_id"
+                  ? // @ts-ignore
+                    credentialSetup.credentialJSON.claims[claimNames]
+                  : fewShortenAddress(
+                      // @ts-ignore
+                      credentialSetup.credentialJSON.claims[claimNames]
+                    )}
+              </div>
+            </div>
+          );
+        })}
+
+      <div className="flex flex-row gap-5 mt-5">
         <button
           onClick={async () => {
-            const claims = await readSchemaClaims(
-              credentialSetup.credentialsDB
+            console.log(credentialSetup.credentialJSON);
+            // setStatus("encrypting");
+            setStatus("computing");
+            const enc = encryptWithMM(
+              credentialSetup.walletPublicKey,
+              // @ts-ignore
+              credentialSetup.credentialJSON
             );
-            console.log({ claims });
-            setClaimsArray(claims);
-            const credentialsCounter = await readCredentialsCounter(
-              credentialSetup.credentialsDB
+            console.log({ enc });
+            const leaf = computeLeaf(
+              // @ts-ignore
+              credentialSetup.credentialJSON,
+              claimsArray
             );
-            console.log({ credentialsCounter });
-            setCounter(credentialsCounter);
-            setOpenForm(true);
+            console.log({ leaf });
+            setStatus("uploading");
+            await uploadEncryptedCredentialAndLeafToContract(
+              enc,
+              credentialSetup.credentialsDB,
+              leaf
+            );
+            console.log("success");
+            setStatus("done");
           }}
-          className="text-white py-3 px-5 mt-10 rounded-xl bg-blue-600 hover:bg-slate-700"
+          className="w-60 border-2 border-red-400 bg-white text-red-400 rounded-lg px-2 py-2 hover:bg-red-500 hover:text-white"
         >
-          Read contract credential schema
+          {buttonName()}
         </button>
-      )} */}
-      {!openForm && (
-        <div className="w-1/2 flex flex-col justify-center">
-          {/* <div
-            className={`text-center text-black text-xl mt-8 ${lalezar.className}`}
-          >
-            Number of credentials issued: {counter}
-          </div> */}
-          <form className="border-2 border-gray-300 p-4 mt-4 rounded-lg">
-            {claimsArray?.map((val) => {
-              return (
-                <label key={val} className="flex flex-row mt-4 items-center">
-                  <div
-                    className={`text-black text-xl w-20 ${lalezar.className}`}
-                    style={{ minWidth: "8rem" }}
-                  >
-                    {val}:
-                  </div>
-                  <input
-                    name={val}
-                    className={`w-80 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 ${lalezar.className}`}
-                    readOnly={
-                      val === "ethAddress" ||
-                      val === "polygonAddress" ||
-                      val === "suiAddress" ||
-                      val === "aptAddress" ||
-                      val === "mercari_id"
-                    }
-                    defaultValue={
-                      val === "ethAddress"
-                        ? credentialSetup.ethAddress
-                        : val === "suiAddress"
-                        ? credentialSetup.suiAddress
-                        : val === "aptAddress"
-                        ? credentialSetup.aptAddress
-                        : val === "mercari_id"
-                        ? credentialSetup.mercari_id
-                        : val === "merAddress"
-                        ? zkLoginSetup.userAddr
-                        : ""
-                    }
-                  />
-                </label>
-              );
-            })}
-          </form>
-          <button
-            onClick={async () => {
-              console.log(credentialSetup.credentialJSON);
-              setStatus("encrypting");
-              const enc = encryptWithMM(
-                credentialSetup.walletPublicKey,
-                // @ts-ignore
-                credentialSetup.credentialJSON
-              );
-              console.log({ enc });
-              setStatus("computing");
-              const leaf = computeLeaf(
-                // @ts-ignore
-                credentialSetup.credentialJSON,
-                claimsArray
-              );
-              console.log({ leaf });
-              setStatus("uploading");
-              await uploadEncryptedCredentialAndLeafToContract(
-                enc,
-                credentialSetup.credentialsDB,
-                leaf
-              );
-              console.log("success");
-              setStatus("done");
-            }}
-            className="text-white py-3 px-5 mt-10 rounded-xl bg-blue-600 hover:bg-slate-700"
-          >
-            {buttonName()}
-          </button>
-        </div>
-      )}
+        <button
+          onClick={async () => {
+            credentialSetup.generateProof(
+              credentialNumber,
+              credentialSetup.credentialJSON,
+              claimsArray,
+              credentialSetup.disclosureVector
+            );
+            console.log("proof generation success!");
+          }}
+          className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-5 py-2 hover:bg-red-500 hover:text-white"
+        >
+          証明を生成
+        </button>
+      </div>
+      {!openForm && <div className="w-1/2 flex flex-col justify-center"></div>}
     </div>
   );
 }
