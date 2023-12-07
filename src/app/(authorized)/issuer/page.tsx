@@ -30,9 +30,13 @@ export default function Page() {
   const credentialSetup = useCredentialDB();
   const suiet = useSuiWallet();
   const { connect, disconnect, connected, wallets, account } = useAptosWallet();
-  const [claimsArray, setClaimsArray] = useState<string[] | undefined>(
-    undefined
-  );
+  const [claimsArray, setClaimsArray] = useState<string[]>([
+    "mercari_id",
+    "ethAddress",
+    "aptAddress",
+    "suiAddress",
+    "merAddress",
+  ]);
   const [credentialJSON, setCredentialJSON] = useState<
     | {
         claims: { [x: string]: string };
@@ -49,7 +53,11 @@ export default function Page() {
     const initializeCredentialJSON = (walletAddress: string) => {
       const initialCredentialJSON = {
         claims: {
+          mercari_id: credentialSetup.mercari_id,
           ethAddress: walletAddress,
+          aptAddress: credentialSetup.aptAddress,
+          suiAddress: credentialSetup.suiAddress,
+          merAddress: zkLoginSetup.userAddr,
         },
       };
       setCredentialJSON(initialCredentialJSON);
@@ -67,6 +75,7 @@ export default function Page() {
 
   useEffect(() => {
     console.log(wallets[2].adapter.name);
+    // credentialSetup.setAptosAddress(account?.address?.toString()!);
   }, []);
 
   useEffect(() => {
@@ -137,7 +146,7 @@ export default function Page() {
           )}
         </div>
         <div>
-          {!connected ? (
+          {!credentialSetup.aptAddress ? (
             <button
               className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
               onClick={() => {
@@ -153,27 +162,39 @@ export default function Page() {
                 href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
               >
                 {/* @ts-ignore */}
-                {shortenAddress(account?.address?.toString())}
+                {/* {shortenAddress(account?.address?.toString())} */}
+                {shortenAddress(credentialSetup.aptAddress)}
               </a>
             </b>
           )}
         </div>
         <div>
-          {/* {!suiet.account?.address ? ( */}
-          <ConnectButton />
-          {/* ) : (
+          {!credentialSetup.suiAddress ? (
+            <button
+              className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
+              onClick={() => {
+                connect(wallets[2].adapter.name); // E.g. connecting to the Aptos official wallet
+              }}
+            >
+              <div>Connect Sui Wallet</div>
+            </button>
+          ) : (
             <b className="ml-2">
               <a
                 className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
                 href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
               >
-                {shortenAddress(credentialSetup.ethAddress)}
+                {/* @ts-ignore */}
+                {shortenAddress(credentialSetup.suiAddress)}
               </a>
             </b>
-          )} */}
+          )}
         </div>
+        {/* <div>
+          <ConnectButton />
+        </div> */}
       </div>
-      {!openForm && (
+      {/* {!openForm && (
         <button
           onClick={async () => {
             const claims = await readSchemaClaims(
@@ -192,14 +213,14 @@ export default function Page() {
         >
           Read contract credential schema
         </button>
-      )}
-      {openForm && (
+      )} */}
+      {!openForm && (
         <div className="w-1/2 flex flex-col justify-center">
-          <div
+          {/* <div
             className={`text-center text-black text-xl mt-8 ${lalezar.className}`}
           >
             Number of credentials issued: {counter}
-          </div>
+          </div> */}
           <form className="border-2 border-gray-300 p-4 mt-4 rounded-lg">
             {claimsArray?.map((val) => {
               return (
@@ -229,6 +250,8 @@ export default function Page() {
                         ? credentialSetup.aptAddress
                         : val === "mercari_id"
                         ? credentialSetup.mercari_id
+                        : val === "merAddress"
+                        ? zkLoginSetup.userAddr
                         : ""
                     }
                   />
