@@ -9,6 +9,7 @@ const Page = () => {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen gap-3 p-4 sm:p-0">
+      <p className="text-left text-2xl text-black mr-80 sm:ml-0">メルペイ</p>
       <div className="border-2 m-4 p-4 w-full">
         <div className="flex flex-row gap-1">
           <p className="text-center text-xs text-gray-400">
