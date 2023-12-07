@@ -44,30 +44,32 @@ export default function Page() {
     <div className="grid place-items-center h-screen">
       <div className="pb-32">
         <p
-          className={`text-center text-black text-3xl mb-8 ${lalezar.className}`}
+          className={`text-center text-black text-3xl mb-20 ${lalezar.className}`}
         >
           ウォレットを生成
         </p>
+        <div className="flex items-center justify-center">
+          <Image
+            src="/mercari.png"
+            alt="Mercari Logo"
+            width={150}
+            height={150}
+          />
+        </div>
         <div
           id="login-buttons"
-          className="section mb-2 flex items-center justify-center"
+          className="section flex items-center justify-center mt-10"
         >
           {openIdProviders.map((provider) => (
             <button
-              className={`btn-login text-black font-bold py-1 px-10 rounded border-[2px] border-gray-300 ${provider}`}
+              className="border-2 border-red-500 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4 hover:bg-red-500 hover:text-white"
               onClick={() => {
                 beginZkLogin(provider);
               }}
               key={provider}
             >
               <div className="flex items-center gap-2">
-                <Image
-                  src="/mercari.png"
-                  alt="Mercari Logo"
-                  width={50}
-                  height={50}
-                />
-                <div className="mr-5 text-lg">Login with Mercari</div>
+                <div className="text-lg">ログインする</div>
               </div>
             </button>
           ))}
