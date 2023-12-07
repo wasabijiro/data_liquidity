@@ -1,0 +1,10 @@
+{
+    "id": "0x438D35f5420E58A63875B17AF872782be3878bd3",
+    "balance": 10000,
+    "loan_amount": 100000,
+    "liquidation": 100000,
+    "deferrals": 10000,
+    "transaction_volume": 10000,
+    "credit": 100000,
+    "protocols": {"1": "aave", "2": "uniswapv3_lp", "3": "maker_dao"}
+}
