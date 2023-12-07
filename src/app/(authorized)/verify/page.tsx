@@ -9,10 +9,10 @@ import { lalezar } from "@/app/fonts";
 import { useState } from "react";
 import { useZkLoginSetup } from "@/libs/store/zkLogin";
 import { SUI_NETWORK } from "@/config/sui";
-import { shortenAddress } from "@/utils";
 import { useCredentialDB } from "@/libs/store/credentialDB";
 import { ETH_NETWORK } from "@/config/ethereum";
 import { verifyProof, readSchemaClaims } from "@/libs/eth";
+import { shortenAddress, veryShortenAddress, fewShortenAddress } from "@/utils";
 
 const groth16 = require("snarkjs").groth16;
 
@@ -25,51 +25,30 @@ export default function Page() {
   const [proofSuccess, setProofSuccess] = useState<boolean>(false);
   const [claimsArray, setClaimsArray] = useState<any | undefined>(undefined);
   const [vals, setVals] = useState<string[] | undefined>(undefined);
+  const [loading, setLoading] = useState<"not yet" | "loading" | "done">(
+    "not yet"
+  );
+
+  const buttonName = () => {
+    if (loading === "not yet") {
+      return "証明を検証";
+    } else if (loading === "loading") {
+      return "検証中...";
+    } else {
+      return "完了！";
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <p
-        className={`text-center text-black text-8xl mb-8 ${lalezar.className}`}
+        className={`text-center text-black text-2xl mb-4 ${lalezar.className}`}
       >
-        User Verify
+        検証
       </p>
-      <div className="flex mb-2">
-        <p
-          className={`text-center text-black text-xl mb-8 ${lalezar.className}`}
-        >
-          zkLogin Address:
-        </p>
-        {zkLoginSetup.userAddr && (
-          <b className="ml-2">
-            <a
-              className={`text-center text-blue-400 underline text-xl mb-8 ${lalezar.className}`}
-              href={`https://suiexplorer.com/address/${zkLoginSetup.userAddr}?network=${SUI_NETWORK}}`}
-            >
-              {shortenAddress(zkLoginSetup.userAddr)}
-            </a>
-          </b>
-        )}
-      </div>
-      <div className="mb-2">
-        {credentialSetup.ethAddress == "" ? (
-          <button
-            className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-            onClick={() => credentialSetup.connectAccount()}
-          >
-            <div>Connect Wallet</div>
-          </button>
-        ) : (
-          <b className="ml-2">
-            <a
-              className={`text-white text-xl py-3 px-5 rounded-xl bg-black hover:bg-slate-700 border-4 border-yellow-500 ${lalezar.className}`}
-              href={`https://${ETH_NETWORK}.etherscan.io/address/${credentialSetup.ethAddress}`}
-            >
-              {shortenAddress(credentialSetup.ethAddress)}
-            </a>
-          </b>
-        )}
-      </div>
       <button
         onClick={async () => {
+          setLoading("loading");
           const proof = {
             proof: {
               pi_a: [
@@ -121,6 +100,7 @@ export default function Page() {
           console.log({ res });
 
           if (res.result === true) {
+            setLoading("done");
             credentialSetup.setIsVerified(true);
           }
 
@@ -152,32 +132,33 @@ export default function Page() {
             router.push("/");
           }
         }}
-        className="text-white py-3 px-5 mt-5 rounded-xl bg-blue-600 hover:bg-slate-700"
+        className="w-60 border-2 border-red-400 bg-white text-red-400 rounded-lg px-2 py-2 hover:bg-red-500 hover:text-white"
       >
-        Verify Proof
+        {buttonName()}
       </button>
       {credentialSetup.isVerified && (
         <div
-          className={`flex justify-center text-black text-xl mt-4 ${lalezar.className}`}
+          className={`flex justify-center text-black text-xs mt-4 ${lalezar.className}`}
         >
-          Proof Verified!
+          証明の検証が成功しました！
         </div>
       )}
       {proofSuccess && claimsArray && (
         <div>
-          <div
-            className={`flex justify-center text-black text-3xl mt-4 ${lalezar.className}`}
-          >
-            Credential claims:
-          </div>
           <ul>
             {claimsArray.map((claimNames: any, index: any) => {
               return (
-                <li key={claimNames}>
+                <li
+                  key={claimNames}
+                  className={`text-center text-black text-lg mt-5 mb-3 ${lalezar.className}`}
+                >
                   {claimNames} ={/* @ts-ignore */}
                   {/* {credentialSetup.disclosureVector[index] */}
                   {/* @ts-ignore */}
-                  {sd_vec[index] ? /* @ts-ignore */ vals[index] : `"Hidden"`}
+                  {sd_vec[index]
+                    ? /* @ts-ignore */
+                      fewShortenAddress(vals[index])
+                    : `"Hidden"`}
                 </li>
               );
             })}
