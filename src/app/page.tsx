@@ -80,7 +80,7 @@ const Page = () => {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen gap-3 p-4 sm:p-0">
       <p className="text-left text-2xl text-black mr-80 sm:ml-0">メルペイ</p>
-      <div className="border-2 m-4 p-4 w-full">
+      <div className="border-2 m-4 p-4 w-full rounded-lg">
         <div className="flex flex-row gap-1">
           <p className="text-center text-xs text-gray-400">
             メルペイあと払い残枠
@@ -91,7 +91,7 @@ const Page = () => {
           <div className="ml-auto">
             <button
               className="border-2 border-red-400 bg-white text-red-400 text-sm rounded-2xl px-10 sm:px-8 py-1 sm:py-1.5 mt-2 sm:mt-4"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               支払い方法を変更
             </button>
@@ -126,95 +126,93 @@ const Page = () => {
             Uniswap v3へ多額の流動性供給を評価しました
           </div>
         )}
-        {credentialSetup.isVerified ? (
-          <div className="flex flex-col">
+        <div className="flex justify-center">
+          {credentialSetup.isVerified ? (
+            <div className="flex flex-col w-full">
+              <button
+                className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
+                onClick={sendTestTx}
+              >
+                NFTをミント
+              </button>
+              {digest && (
+                <p>
+                  <a
+                    style={{ color: "#0000EE" }}
+                    className="mx-1 underline decoration-solid"
+                    // href={`https://suiscan.xyz/${NETWORK}/tx/${mintDigest}`}
+                    href={`https://suiexplorer.com/txblock/${digest}?network=${SUI_NETWORK}`}
+                  >
+                    {shortenAddress(digest)}
+                  </a>
+                </p>
+              )}
+            </div>
+          ) : (
             <button
-              className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
-              onClick={sendTestTx}
+              className="border-2 w-full border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
+              onClick={() => router.push("/login")}
             >
-              NFTをミント
+              データを開示して与信を更新
             </button>
-            {digest && (
-              <p>
-                <a
-                  style={{ color: "#0000EE" }}
-                  className="mx-1 underline decoration-solid"
-                  // href={`https://suiscan.xyz/${NETWORK}/tx/${mintDigest}`}
-                  href={`https://suiexplorer.com/txblock/${digest}?network=${SUI_NETWORK}`}
-                >
-                  {shortenAddress(digest)}
-                </a>
-              </p>
-            )}
-          </div>
-        ) : (
-          <button
-            className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
-            onClick={() => router.push("/login")}
-          >
-            データを開示して与信を更新
-          </button>
-        )}
+          )}
+        </div>
       </div>
-      {/* <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 border-2 p-2 m-2"> */}
-      <div className="flex flex-row border-2 p-2 m-2">
-        <div className="border-2 border-gray-500 bg-white text-gray-500 rounded-lg px-2 py-2">
-          コード払い
+      <div className="flex flex-row justify-between items-center w-full border-2 p-3 rounded-lg px-8">
+        <div className="m-2 p-3 border-2 rounded-lg">
           <Image
-            className="px-1 py-1 ml-1"
             src="/qr-code.png"
             alt="qr-code logo"
-            width={30}
-            height={30}
+            width={60}
+            height={60}
           />
+          <p className="text-center sm:text-left text-xs mt-1">カード払い</p>
         </div>
-        <div className="border-2 border-gray-500 bg-white text-gray-500 rounded-lg px-2 py-2">
-          残高
+        <div className="m-2 p-3 border-2 rounded-lg">
           <Image
-            className="px-1 py-1 ml-1"
             src="/yen.png"
             alt="yen logo"
-            width={30}
-            height={30}
+            width={60}
+            height={60}
           />
+          <p className="text-center sm:text-left text-xsx mt-1">残高</p>
         </div>
-        <div className="border-2 border-gray-500 bg-white text-gray-500 rounded-lg px-2 py-2">
-          ポイント
+        <div className="m-2 p-3 border-2 rounded-lg">
           <Image
-            className="px-1 py-1 ml-1"
             src="/point.png"
             alt="point logo"
-            width={30}
-            height={30}
+            width={60}
+            height={60}
           />
+          <p className="text-center sm:text-left text-xs mt-1">ポイント</p>
         </div>
-        <div className="border-2 border-gray-500 bg-white text-gray-500 rounded-lg px-2 py-2">
-          あと払い履歴
+        <div className="m-2 p-3 border-2 rounded-lg">
           <Image
-            className="px-1 py-1 ml-1"
             src="/calender.png"
             alt="calender logo"
-            width={40}
-            height={40}
+            width={60}
+            height={60}
+            className="mx-auto"
           />
+          <p className="text-center sm:text-left text-xs mt-1">あと払い履歴</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 border-2 p-2">
-        <div className="mb-4 sm:mb-0">
-          <p className="text-center sm:text-left">電子マネー(iD)</p>
-          <br />
-          <p className="text-center sm:text-left text-gray-400">
-            設定後の使い方・よくある使い
-          </p>
-        </div>
-        <div className="flex items-center justify-center sm:justify-end">
-          <Image
-            className=""
-            src="/id.png"
-            alt="id logo"
-            width={75}
-            height={75}
-          />
+      <div className="flex border-2 w-full p-4 rounded-lg">
+        <div className="flex flex-row">
+          <div className="mr-20 pr-20">
+            <p className="text-center sm:text-left">電子マネー(iD)</p>
+            <p className="text-center sm:text-left text-gray-400 text-xs">
+              設定後の使い方・よくある使い方
+            </p>
+          </div>
+          <div className="pl-4 mt-1 ">
+            <Image
+              src="/id.png"
+              alt="id logo"
+              width={75}
+              height={75}
+            />
+          </div>
         </div>
       </div>
     </div>
