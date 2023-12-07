@@ -106,6 +106,7 @@ export type credentisalState = {
     publicSignals: any;
   };
   disclosureVector: number[] | undefined;
+  isVerified: boolean;
   connectAccount: () => void;
   getPubKeyFromMM: (walletAddress: string) => void;
   generateProof: (
@@ -118,5 +119,6 @@ export type credentisalState = {
   setSuiAddress: (address: string) => void;
   setAptosAddress: (address: string) => void;
   setCredentialJSON: (credentialJSON: any) => void;
+  setIsVerified: (isVerified: boolean) => void;
   getInfo: () => void;
 };

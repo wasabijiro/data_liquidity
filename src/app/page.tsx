@@ -3,12 +3,42 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { GoQuestion } from "react-icons/go";
+import { useCredentialDB } from "@/libs/store/credentialDB";
+import { useEffect, useState } from "react";
+import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { moveCallSponsoredMint } from "@/libs/sponsoredZkLogin";
+import { useZkLoginSetup } from "@/libs/store/zkLogin";
+import { SUI_NETWORK } from "@/config/sui";
+import { shortenAddress } from "@/utils";
 
 const Page = () => {
   const router = useRouter();
 
+  const credentialSetup = useCredentialDB();
+  const zkLoginSetup = useZkLoginSetup();
+  const [digest, setDigest] = useState<string>("");
+  // const a = true;
+
+  useEffect(() => {
+    if (credentialSetup.isVerified) {
+    }
+  }, []);
+
+  const sendTestTx = async () => {
+    const txb = new TransactionBlock();
+    const account = zkLoginSetup.account();
+    console.log("account", account);
+    console.log(zkLoginSetup.userAddr);
+    const result = await moveCallSponsoredMint(txb, account);
+    console.log(result.effects?.status.status);
+    if (result.effects?.status.status === "success") {
+      setDigest(result.digest);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen gap-3 p-4 sm:p-0">
+      <p className="text-left text-2xl text-black mr-80 sm:ml-0">メルペイ</p>
       <div className="border-2 m-4 p-4 w-full">
         <div className="flex flex-row gap-1">
           <p className="text-center text-xs text-gray-400">
@@ -35,12 +65,35 @@ const Page = () => {
           <div className="text-white font-light">¥0</div>
           <div className="text-white font-light">¥10,000</div>
         </div>
-        <button
-          className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
-          onClick={() => router.push("/login")}
-        >
-          データを開示して与信を更新
-        </button>
+        {credentialSetup.isVerified ? (
+          <div className="flex flex-col">
+            <button
+              className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
+              onClick={sendTestTx}
+            >
+              NFTをミント
+            </button>
+            {digest && (
+              <p>
+                <a
+                  style={{ color: "#0000EE" }}
+                  className="mx-1 underline decoration-solid"
+                  // href={`https://suiscan.xyz/${NETWORK}/tx/${mintDigest}`}
+                  href={`https://suiexplorer.com/txblock/${digest}?network=${SUI_NETWORK}`}
+                >
+                  {shortenAddress(digest)}
+                </a>
+              </p>
+            )}
+          </div>
+        ) : (
+          <button
+            className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
+            onClick={() => router.push("/login")}
+          >
+            データを開示して与信を更新
+          </button>
+        )}
       </div>
       {/* <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 border-2 p-2 m-2"> */}
       <div className="flex flex-row border-2 p-2 m-2">

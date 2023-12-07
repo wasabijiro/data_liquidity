@@ -23,6 +23,7 @@ export const useCredentialDB = create<credentisalState>((set, get) => ({
     publicSignals: "",
   },
   disclosureVector: [],
+  isVerified: false,
   connectAccount: async () => {
     // @ts-ignore
     if (window.ethereum) {
@@ -98,6 +99,9 @@ export const useCredentialDB = create<credentisalState>((set, get) => ({
   },
   setAptosAddress: (address: string) => {
     set({ aptAddress: address });
+  },
+  setIsVerified: (isVerified: boolean) => {
+    set({ isVerified: isVerified });
   },
   getInfo: () => ({
     // @ts-ignore
