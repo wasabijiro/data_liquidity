@@ -13,6 +13,7 @@ import { useCredentialDB } from "@/libs/store/credentialDB";
 import { ETH_NETWORK } from "@/config/ethereum";
 import { verifyProof, readSchemaClaims } from "@/libs/eth";
 import { shortenAddress, veryShortenAddress, fewShortenAddress } from "@/utils";
+import { sleep } from "@/utils";
 
 const groth16 = require("snarkjs").groth16;
 
@@ -129,6 +130,7 @@ export default function Page() {
           if (res.result === true) {
             console.log("verify success");
             setProofSuccess(true);
+            await sleep(3000);
             router.push("/");
           }
         }}
