@@ -1,5 +1,6 @@
 "use client";
 
+import { lalezar } from "@/app/fonts";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { GoQuestion } from "react-icons/go";
@@ -9,7 +10,7 @@ import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { moveCallSponsoredMint } from "@/libs/sponsoredZkLogin";
 import { useZkLoginSetup } from "@/libs/store/zkLogin";
 import { SUI_NETWORK } from "@/config/sui";
-import { shortenAddress } from "@/utils";
+import { shortenAddress, fewShortenAddress } from "@/utils";
 
 const Page = () => {
   const router = useRouter();
@@ -19,11 +20,38 @@ const Page = () => {
   const [digest, setDigest] = useState<string>("");
   const [messsage, setMessage] = useState<string>("");
   const [fetched, setFetched] = useState<boolean>(false);
+  const [loading, setLoading] = useState<"not yet" | "loading" | "done">(
+    "not yet"
+  );
+  const [mintLoading, setMintLoading] = useState<
+    "not yet" | "loading" | "done"
+  >("not yet");
   // const a = true;
+
+  const loadingName = () => {
+    if (loading === "not yet") {
+      return "";
+    } else if (loading === "loading") {
+      return "与信額を更新中...";
+    } else {
+      return "Uniswap v3への多額の流動性供給を評価しました";
+    }
+  };
+
+  const mintButtonName = () => {
+    if (mintLoading === "not yet") {
+      return "NFTをミント";
+    } else if (mintLoading === "loading") {
+      return "NFTをミント中...";
+    } else {
+      return "完了！";
+    }
+  };
 
   useEffect(() => {
     console.log("##1##");
     if (credentialSetup.isVerified) {
+      setLoading("loading");
       const postData = {
         id: "0x438D35f5420E58A63875B17AF872782be3878bd3",
         balance: 10000,
@@ -54,6 +82,7 @@ const Page = () => {
         .then((response) => response.json())
         .then((data) => {
           // Handle the response data if needed
+          setLoading("done");
           console.log("Response from server:", data);
           setFetched(true);
         })
@@ -66,6 +95,7 @@ const Page = () => {
   }, []);
 
   const sendTestTx = async () => {
+    setMintLoading("loading");
     const txb = new TransactionBlock();
     const account = zkLoginSetup.account();
     console.log("account", account);
@@ -73,13 +103,16 @@ const Page = () => {
     const result = await moveCallSponsoredMint(txb, account);
     console.log(result.effects?.status.status);
     if (result.effects?.status.status === "success") {
+      setMintLoading("done");
       setDigest(result.digest);
     }
   };
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen gap-3 p-4 sm:p-0">
-      <p className="text-left text-2xl text-black mr-80 sm:ml-0">メルペイ</p>
+      <div className="flex flex-row w-full">
+        <p className="text-2xl text-black mr-80">メルペイ</p>
+      </div>
       <div className="border-2 m-4 p-4 w-full rounded-lg">
         <div className="flex flex-row gap-1">
           <p className="text-center text-xs text-gray-400">
@@ -91,14 +124,14 @@ const Page = () => {
           <div className="ml-auto">
             <button
               className="border-2 border-red-400 bg-white text-red-400 text-sm rounded-2xl px-10 sm:px-8 py-1 sm:py-1.5 mt-2 sm:mt-4"
-              onClick={() => { }}
+              onClick={() => {}}
             >
               支払い方法を変更
             </button>
           </div>
         </div>
         <div className="flex flex-row">
-          {fetched ? (
+          {loading === "done" ? (
             <div className="flex flex-row items-end gap-2">
               <p className="text-center text-black text-2xl mb-4 sm:mb-8">
                 <b>¥13,000</b>
@@ -115,35 +148,35 @@ const Page = () => {
         </div>
         <div className="w-120 h-8 bg-cyan-300 rounded-lg mb-4 sm:mb-10 flex justify-between items-center px-2">
           <div className="text-white font-light">¥0</div>
-          {fetched ? (
+          {loading === "done" ? (
             <div className="text-white font-light">¥13,000</div>
           ) : (
             <div className="text-white font-light">¥10,000</div>
           )}
         </div>
-        {fetched && (
+        {loading !== "not yet" && (
           <div className="text-black font-light text-sm mb-2">
-            Uniswap v3へ多額の流動性供給を評価しました
+            {loadingName()}
           </div>
         )}
         <div className="flex justify-center">
           {credentialSetup.isVerified ? (
             <div className="flex flex-col w-full">
               <button
-                className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white"
+                className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-10 py-1 sm:py-2 mt-2 sm:mt-4  hover:bg-red-500 hover:text-white mb-2"
                 onClick={sendTestTx}
               >
-                NFTをミント
+                {mintButtonName()}
               </button>
               {digest && (
                 <p>
                   <a
                     style={{ color: "#0000EE" }}
-                    className="mx-1 underline decoration-solid"
+                    className="text-center text-blue-400 underline text-ms mb-8 "
                     // href={`https://suiscan.xyz/${NETWORK}/tx/${mintDigest}`}
                     href={`https://suiexplorer.com/txblock/${digest}?network=${SUI_NETWORK}`}
                   >
-                    {shortenAddress(digest)}
+                    {fewShortenAddress(digest)}
                   </a>
                 </p>
               )}
@@ -160,30 +193,15 @@ const Page = () => {
       </div>
       <div className="flex flex-row justify-between items-center w-full border-2 p-3 rounded-lg px-8">
         <div className="m-2 p-3 border-2 rounded-lg">
-          <Image
-            src="/qr-code.png"
-            alt="qr-code logo"
-            width={60}
-            height={60}
-          />
+          <Image src="/qr-code.png" alt="qr-code logo" width={60} height={60} />
           <p className="text-center sm:text-left text-xs mt-1">カード払い</p>
         </div>
         <div className="m-2 p-3 border-2 rounded-lg">
-          <Image
-            src="/yen.png"
-            alt="yen logo"
-            width={60}
-            height={60}
-          />
+          <Image src="/yen.png" alt="yen logo" width={60} height={60} />
           <p className="text-center sm:text-left text-xsx mt-1">残高</p>
         </div>
         <div className="m-2 p-3 border-2 rounded-lg">
-          <Image
-            src="/point.png"
-            alt="point logo"
-            width={60}
-            height={60}
-          />
+          <Image src="/point.png" alt="point logo" width={60} height={60} />
           <p className="text-center sm:text-left text-xs mt-1">ポイント</p>
         </div>
         <div className="m-2 p-3 border-2 rounded-lg">
@@ -206,12 +224,7 @@ const Page = () => {
             </p>
           </div>
           <div className="pl-4 mt-1 ">
-            <Image
-              src="/id.png"
-              alt="id logo"
-              width={75}
-              height={75}
-            />
+            <Image src="/id.png" alt="id logo" width={75} height={75} />
           </div>
         </div>
       </div>
