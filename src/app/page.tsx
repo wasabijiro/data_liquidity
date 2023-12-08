@@ -40,7 +40,7 @@ const Page = () => {
 
   const mintButtonName = () => {
     if (mintLoading === "not yet") {
-      return "NFTをミント";
+      return "報酬を受け取る";
     } else if (mintLoading === "loading") {
       return "NFTをミント中...";
     } else {

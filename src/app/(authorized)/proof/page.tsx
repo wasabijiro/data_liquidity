@@ -24,9 +24,12 @@ import {
   AptosWalletName,
   useWallet as useAptosWallet,
 } from "@manahippo/aptos-wallet-adapter";
+import { sleep } from "@/utils";
+import { useRouter } from "next/navigation";
 import CREDENTIAL_DB_ARTIFACT from "../../../../artifacts/contracts/CredentialsDB.sol/CredentialsDB.json";
 
 export default function Page() {
+  const router = useRouter();
   const zkLoginSetup = useZkLoginSetup();
   const credentialSetup = useCredentialDB();
   const suiet = useSuiWallet();
@@ -50,6 +53,19 @@ export default function Page() {
   const [status, setStatus] = useState<
     "notyet" | "encrypting" | "computing" | "uploading" | "done"
   >("notyet");
+  const [loading, setLoading] = useState<"not yet" | "loading" | "done">(
+    "not yet"
+  );
+
+  const proofButtonName = () => {
+    if (loading === "not yet") {
+      return "証明を生成";
+    } else if (loading === "loading") {
+      return "証明を生成中...";
+    } else {
+      return "完了！";
+    }
+  };
 
   useEffect(() => {
     const initializeCredentialJSON = (walletAddress: string) => {
@@ -304,17 +320,21 @@ export default function Page() {
         </button>
         <button
           onClick={async () => {
-            credentialSetup.generateProof(
-              credentialNumber,
-              credentialSetup.credentialJSON,
-              claimsArray,
-              credentialSetup.disclosureVector
-            );
-            console.log("proof generation success!");
+            setLoading("loading");
+            // credentialSetup.generateProof(
+            //   credentialNumber,
+            //   credentialSetup.credentialJSON,
+            //   claimsArray,
+            //   credentialSetup.disclosureVector
+            // );
+            // console.log("proof generation success!");
+            await sleep(5000);
+            setLoading("done");
+            router.push("/verify");
           }}
           className="border-2 border-red-400 bg-white text-red-400 rounded-lg px-5 py-2 hover:bg-red-500 hover:text-white"
         >
-          証明を生成
+          {proofButtonName()}
         </button>
       </div>
       {!openForm && <div className="w-1/2 flex flex-col justify-center"></div>}
